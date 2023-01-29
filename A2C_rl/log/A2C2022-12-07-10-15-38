@@ -1,0 +1,6 @@
+2022-12-07 10:15:38,673 Train INFO: Namespace(logger=<Logger Train (INFO)>, name='A2C2022-12-07-10-15-38', gpu='0', device=device(type='cuda', index=0), gamma=1, epoch_num=100, train_episode=2000, test_episode=1, val_episode=40, test_size=0.1, val_size=0.5, batch_size=40, train_batch_size=50, num_steps=10, h=1, w=[120, 50], nn_out=40, share_lr=0.001, actor_lr=0.001, critic_lr=0.01, step=20, lr_min=0.0001, e_rate=0.001, a_rate=1, c_rate=1, lr_decay_lambda=0.999, duse_T=True, est_T=False, use_pref=False, same_price=False, use_price=True, only_test=True, change_T=True, num='7', print_grad=False, max_norm=10, seed_range=1, net_seed=47, info=True, selling_length=180, cardinality=4, ini_inv=10, num_products=10, number_samples=10000, num_cus_types=4, seg_prob=[0.4, 0.3, 0.1, 0.2], num_cus_features=6, cus_type=None, rank_list=None, detail=True)
+2022-12-07 10:15:38,673 Train INFO: log/A2C2022-12-07-10-15-38
+2022-12-07 10:15:38,677 Train INFO: products price: [2000.         1788.88888889 1577.77777778 1366.66666667 1155.55555556
+  944.44444444  733.33333333  522.22222222  311.11111111  100.        ]
+2022-12-07 10:15:38,678 Train INFO: Load Factor 1.8
+2022-12-07 10:15:38,678 Train INFO: test seed: 0************************************

@@ -1,0 +1,208 @@
+2022-11-28 11:23:31,068 Train INFO: Namespace(logger=<Logger Train (INFO)>, name='A2C2022-11-28-11-23-31', gpu='0', device=device(type='cuda', index=0), gamma=1, epoch_num=100, train_episode=2000, test_episode=40, val_episode=40, test_size=0.1, val_size=0.5, batch_size=40, train_batch_size=50, num_steps=10, h=1, w=[120, 50], nn_out=40, share_lr=0.0001, actor_lr=0.0001, critic_lr=0.01, e_rate=0.001, a_rate=1, c_rate=1, lr_decay_lambda=0.9999, duse_T=True, est_T=False, use_pref=False, same_price=False, use_price=True, only_test=False, change_T=True, num='41', print_grad=False, max_norm=10, seed_range=1, net_seed=12, info=True, selling_length=80, cardinality=4, ini_inv=10, num_products=10, number_samples=10000, num_cus_types=4, seg_prob=[0.4, 0.3, 0.1, 0.2], num_cus_features=6, p_file='prod10.npy', c_file='c4.npy')
+2022-11-28 11:23:31,068 Train INFO: log/A2C2022-11-28-11-23-31
+2022-11-28 11:23:38,304 Train INFO: Load Factor 0.8
+2022-11-28 11:23:49,522 Train INFO: mean test reward1: [15.962671214452147, 15.501073712478066, 15.50676733154033, 14.150273039432522, 18.928139577541096, 16.025570310775567, 15.024247426019631, 14.752131072328156, 15.081712062139799, 14.125459068046693, 15.041615389827058, 15.224162071617512, 15.071328864057605, 16.00686469702055, 15.961585310205635, 14.21719523050624, 15.599589398246389, 13.888384940639863, 15.270779108380012, 15.898686213882218, 13.032400020831215, 15.375892769066633, 14.851158299182728, 15.896674666507069, 14.471172920445019, 15.007343863487682, 17.553351678497222, 17.096110145637823, 15.162600625241677, 19.339228474913472, 15.23449603466548, 15.141883464111515, 15.443868235216915, 14.981443987855338, 13.814016741987743, 15.433639980318095, 15.00533231611253, 14.834254736650779, 15.426500271409488, 15.088232426589556]
+2022-11-28 11:23:49,522 Train INFO: mean test reward2: [21.49367313385727, 20.710815565270863, 18.602511092323883, 18.11788657334122, 19.982516122997115, 22.25808215232424, 22.37555792929826, 20.462963162537093, 17.24072899675838, 18.83133799351918, 19.69639069371249, 18.955839174072487, 18.86522380750436, 19.233411107988303, 14.378578108563561, 19.63848908677372, 18.52609432565203, 20.399696364965067, 20.540575914561657, 18.779905889042382, 19.549060651192917, 18.363177408271714, 20.318799880411277, 18.51158004693678, 18.54981652736079, 18.799926047215052, 18.98802995922233, 20.306295053847737, 18.179085590159843, 18.35207369025592, 20.118255771188355, 20.543593922986393, 18.83064719602993, 18.86508694414119, 20.39178599531328, 19.184532745140828, 20.80828025369622, 17.34054202040404, 16.57823516061556, 14.595335898294115]
+2022-11-28 11:23:49,522 Train INFO: mean test reward3: [18.405261755687178, 19.6328604035265, 21.881161447304315, 19.58949366634558, 22.745678278937874, 22.278514789849453, 20.514745198967486, 21.20663730503961, 20.843555488833857, 20.169031346569156, 22.269057234895897, 22.071154136673172, 18.931510742500812, 21.708072320467416, 21.518079631098555, 22.58049956095485, 22.209507335895218, 22.057882983121413, 19.667131929865878, 22.580499560954845, 22.797317769084685, 19.114057424291268, 21.89806500983627, 21.43090152074785, 19.632860403526493, 20.60555571829839, 21.28007986056309, 20.220670836715964, 22.261146826042022, 21.861781936121737, 21.34499050426166, 19.887923997711788, 22.763046242745304, 20.169031346569152, 20.01331018353968, 19.46768168554347, 21.907061322936656, 19.805949530363396, 19.222235907429596, 20.003388227310655]
+2022-11-28 11:23:49,523 Train INFO: mean test reward4: [14.776934401742277, 17.30398749158388, 14.217438583036126, 18.402854343969526, 18.548183403285353, 14.448793665279496, 16.729425124933844, 19.538716829349294, 15.890963112115998, 14.291806781688244, 15.743928804094805, 18.029175181633665, 17.901419328541724, 15.000602450292329, 14.555242026580576, 20.442134586965143, 19.582083566530205, 16.665189871136356, 14.347606310739172, 18.14712426551461, 15.242493788667005, 15.471657507219957, 15.437126822021565, 16.40976609135123, 16.129018928093696, 17.456058904829973, 16.300816908267628, 15.442307287723217, 14.000926673576084, 17.188652869355536, 16.375235406152832, 21.24194592702826, 14.719644298409195, 15.264502096460138, 16.974870903047716, 14.20952817418225, 15.600758393904915, 15.497816421910464, 20.062660132650056, 15.255044541506587]
+2022-11-28 11:23:49,523 Train INFO: mean test reward: 15.3857,19.1566,20.9637,16.4711
+2022-11-28 11:23:49,528 Train INFO: start epoch: 1 / 100
+2022-11-28 11:23:50,133 Train INFO: mean validate reward: 14.1135
+2022-11-28 11:23:50,747 Train INFO: mean validate reward: 15.1286
+2022-11-28 11:23:51,304 Train INFO: mean validate reward: 15.0928
+2022-11-28 11:23:51,940 Train INFO: mean validate reward: 14.5208
+2022-11-28 11:23:52,618 Train INFO: mean validate reward: 14.8416
+2022-11-28 11:23:53,164 Train INFO: mean validate reward: 14.3037
+2022-11-28 11:23:53,762 Train INFO: mean validate reward: 14.4021
+2022-11-28 11:23:54,342 Train INFO: mean validate reward: 12.9909
+2022-11-28 11:23:54,987 Train INFO: mean validate reward: 14.9636
+2022-11-28 11:23:55,504 Train INFO: mean validate reward: 14.0177
+2022-11-28 11:23:56,112 Train INFO: mean validate reward: 17.5621
+2022-11-28 11:23:56,722 Train INFO: mean validate reward: 17.0495
+2022-11-28 11:23:57,318 Train INFO: mean validate reward: 17.0365
+2022-11-28 11:23:57,925 Train INFO: mean validate reward: 15.9154
+2022-11-28 11:23:58,607 Train INFO: mean validate reward: 19.1149
+2022-11-28 11:23:59,247 Train INFO: mean validate reward: 17.6911
+2022-11-28 11:23:59,911 Train INFO: mean validate reward: 17.3544
+2022-11-28 11:24:00,465 Train INFO: mean validate reward: 15.1317
+2022-11-28 11:24:01,191 Train INFO: mean validate reward: 19.1647
+2022-11-28 11:24:01,793 Train INFO: mean validate reward: 16.6178
+2022-11-28 11:24:02,323 Train INFO: mean validate reward: 16.8705
+2022-11-28 11:24:02,942 Train INFO: mean validate reward: 18.4969
+2022-11-28 11:24:03,604 Train INFO: mean validate reward: 19.1533
+2022-11-28 11:24:04,286 Train INFO: mean validate reward: 19.5926
+2022-11-28 11:24:04,881 Train INFO: mean validate reward: 19.3947
+2022-11-28 11:24:05,392 Train INFO: mean validate reward: 19.4423
+2022-11-28 11:24:05,950 Train INFO: mean validate reward: 19.1034
+2022-11-28 11:24:06,497 Train INFO: mean validate reward: 19.0302
+2022-11-28 11:24:07,076 Train INFO: mean validate reward: 19.3986
+2022-11-28 11:24:07,652 Train INFO: mean validate reward: 20.3259
+2022-11-28 11:24:08,246 Train INFO: mean validate reward: 19.1718
+2022-11-28 11:24:08,948 Train INFO: mean validate reward: 20.4505
+2022-11-28 11:24:09,593 Train INFO: mean validate reward: 18.4797
+2022-11-28 11:24:10,167 Train INFO: mean validate reward: 19.0434
+2022-11-28 11:24:10,767 Train INFO: mean validate reward: 19.8050
+2022-11-28 11:24:11,307 Train INFO: mean validate reward: 19.2080
+2022-11-28 11:24:11,869 Train INFO: mean validate reward: 19.6658
+2022-11-28 11:24:12,509 Train INFO: mean validate reward: 20.5433
+2022-11-28 11:24:12,985 Train INFO: mean validate reward: 17.7515
+2022-11-28 11:24:13,585 Train INFO: mean validate reward: 19.7450
+2022-11-28 11:24:13,585 Train INFO: start epoch: 2 / 100
+2022-11-28 11:24:14,141 Train INFO: mean validate reward: 18.6046
+2022-11-28 11:24:14,745 Train INFO: mean validate reward: 19.5832
+2022-11-28 11:24:15,271 Train INFO: mean validate reward: 18.0862
+2022-11-28 11:24:15,855 Train INFO: mean validate reward: 19.5367
+2022-11-28 11:24:16,483 Train INFO: mean validate reward: 19.3948
+2022-11-28 11:24:16,984 Train INFO: mean validate reward: 17.6598
+2022-11-28 11:24:17,572 Train INFO: mean validate reward: 20.3065
+2022-11-28 11:24:18,187 Train INFO: mean validate reward: 19.5359
+2022-11-28 11:24:18,702 Train INFO: mean validate reward: 16.9284
+2022-11-28 11:24:19,337 Train INFO: mean validate reward: 19.6906
+2022-11-28 11:24:19,859 Train INFO: mean validate reward: 17.5575
+2022-11-28 11:24:20,504 Train INFO: mean validate reward: 19.4730
+2022-11-28 11:24:21,152 Train INFO: mean validate reward: 18.9365
+2022-11-28 11:24:21,738 Train INFO: mean validate reward: 18.6363
+2022-11-28 11:24:22,252 Train INFO: mean validate reward: 16.9898
+2022-11-28 11:24:22,848 Train INFO: mean validate reward: 18.6770
+2022-11-28 11:24:23,483 Train INFO: mean validate reward: 18.3547
+2022-11-28 11:24:24,081 Train INFO: mean validate reward: 19.1544
+2022-11-28 11:24:24,631 Train INFO: mean validate reward: 18.1980
+2022-11-28 11:24:25,199 Train INFO: mean validate reward: 17.9237
+2022-11-28 11:24:25,824 Train INFO: mean validate reward: 19.0863
+2022-11-28 11:24:26,340 Train INFO: mean validate reward: 17.1705
+2022-11-28 11:24:26,905 Train INFO: mean validate reward: 18.6237
+2022-11-28 11:24:27,466 Train INFO: mean validate reward: 18.3061
+2022-11-28 11:24:28,081 Train INFO: mean validate reward: 20.5967
+2022-11-28 11:24:28,701 Train INFO: mean validate reward: 20.3409
+2022-11-28 11:24:29,296 Train INFO: mean validate reward: 19.9260
+2022-11-28 11:24:29,866 Train INFO: mean validate reward: 19.7355
+2022-11-28 11:24:30,429 Train INFO: mean validate reward: 18.2949
+2022-11-28 11:24:31,019 Train INFO: mean validate reward: 19.5602
+2022-11-28 11:24:31,633 Train INFO: mean validate reward: 19.6960
+2022-11-28 11:24:32,195 Train INFO: mean validate reward: 19.8617
+2022-11-28 11:24:32,685 Train INFO: mean validate reward: 17.3525
+2022-11-28 11:24:33,291 Train INFO: mean validate reward: 18.3898
+2022-11-28 11:24:33,919 Train INFO: mean validate reward: 19.7455
+2022-11-28 11:24:34,582 Train INFO: mean validate reward: 21.2117
+2022-11-28 11:24:35,176 Train INFO: mean validate reward: 19.5966
+2022-11-28 11:24:35,734 Train INFO: mean validate reward: 18.8079
+2022-11-28 11:24:36,320 Train INFO: mean validate reward: 18.6554
+2022-11-28 11:24:36,881 Train INFO: mean validate reward: 19.3793
+2022-11-28 11:24:36,881 Train INFO: start epoch: 3 / 100
+2022-11-28 11:24:37,421 Train INFO: mean validate reward: 18.6838
+2022-11-28 11:24:37,967 Train INFO: mean validate reward: 17.3245
+2022-11-28 11:24:38,512 Train INFO: mean validate reward: 19.0603
+2022-11-28 11:24:39,065 Train INFO: mean validate reward: 19.0718
+2022-11-28 11:24:39,601 Train INFO: mean validate reward: 19.4784
+2022-11-28 11:24:40,346 Train INFO: mean validate reward: 21.7995
+2022-11-28 11:24:40,995 Train INFO: mean validate reward: 19.9015
+2022-11-28 11:24:41,588 Train INFO: mean validate reward: 20.5436
+2022-11-28 11:24:42,254 Train INFO: mean validate reward: 19.8929
+2022-11-28 11:24:42,791 Train INFO: mean validate reward: 20.4065
+2022-11-28 11:24:43,392 Train INFO: mean validate reward: 19.6889
+2022-11-28 11:24:43,992 Train INFO: mean validate reward: 20.7266
+2022-11-28 11:24:44,513 Train INFO: mean validate reward: 18.6589
+2022-11-28 11:24:45,060 Train INFO: mean validate reward: 20.3363
+2022-11-28 11:24:45,669 Train INFO: mean validate reward: 21.7009
+2022-11-28 11:24:46,289 Train INFO: mean validate reward: 21.2292
+2022-11-28 11:24:46,819 Train INFO: mean validate reward: 20.4653
+2022-11-28 11:24:47,370 Train INFO: mean validate reward: 20.4323
+2022-11-28 11:24:47,959 Train INFO: mean validate reward: 20.4856
+2022-11-28 11:24:48,535 Train INFO: mean validate reward: 19.4159
+2022-11-28 11:24:49,014 Train INFO: mean validate reward: 18.0977
+2022-11-28 11:24:49,587 Train INFO: mean validate reward: 20.6793
+2022-11-28 11:24:50,121 Train INFO: mean validate reward: 18.6917
+2022-11-28 11:24:50,666 Train INFO: mean validate reward: 20.2169
+2022-11-28 11:24:51,325 Train INFO: mean validate reward: 20.6295
+2022-11-28 11:24:51,878 Train INFO: mean validate reward: 18.9373
+2022-11-28 11:24:52,406 Train INFO: mean validate reward: 19.4805
+2022-11-28 11:24:52,996 Train INFO: mean validate reward: 20.7860
+2022-11-28 11:24:53,640 Train INFO: mean validate reward: 21.7958
+2022-11-28 11:24:54,275 Train INFO: mean validate reward: 21.9631
+2022-11-28 11:24:54,805 Train INFO: mean validate reward: 18.8746
+2022-11-28 11:24:55,388 Train INFO: mean validate reward: 19.2986
+2022-11-28 11:24:55,973 Train INFO: mean validate reward: 20.9369
+2022-11-28 11:24:56,573 Train INFO: mean validate reward: 21.3485
+2022-11-28 11:24:57,066 Train INFO: mean validate reward: 18.0230
+2022-11-28 11:24:57,693 Train INFO: mean validate reward: 20.6862
+2022-11-28 11:24:58,314 Train INFO: mean validate reward: 22.2035
+2022-11-28 11:24:58,927 Train INFO: mean validate reward: 21.7843
+2022-11-28 11:24:59,469 Train INFO: mean validate reward: 20.5089
+2022-11-28 11:25:00,080 Train INFO: mean validate reward: 20.8894
+2022-11-28 11:25:00,082 Train INFO: great!
+2022-11-28 11:25:00,082 Train INFO: start epoch: 4 / 100
+2022-11-28 11:25:00,643 Train INFO: mean validate reward: 20.7175
+2022-11-28 11:25:00,644 Train INFO: great!
+2022-11-28 11:25:01,267 Train INFO: mean validate reward: 20.6581
+2022-11-28 11:25:01,844 Train INFO: mean validate reward: 20.0354
+2022-11-28 11:25:02,481 Train INFO: mean validate reward: 22.4834
+2022-11-28 11:25:03,084 Train INFO: mean validate reward: 20.3449
+2022-11-28 11:25:03,641 Train INFO: mean validate reward: 20.9306
+2022-11-28 11:25:04,202 Train INFO: mean validate reward: 21.2056
+2022-11-28 11:25:04,203 Train INFO: great!
+2022-11-28 11:25:04,744 Train INFO: mean validate reward: 19.7221
+2022-11-28 11:25:05,310 Train INFO: mean validate reward: 20.5401
+2022-11-28 11:25:05,854 Train INFO: mean validate reward: 19.0190
+2022-11-28 11:25:06,493 Train INFO: mean validate reward: 20.8414
+2022-11-28 11:25:07,123 Train INFO: mean validate reward: 22.4189
+2022-11-28 11:25:07,759 Train INFO: mean validate reward: 20.5277
+2022-11-28 11:25:08,415 Train INFO: mean validate reward: 21.6722
+2022-11-28 11:25:08,933 Train INFO: mean validate reward: 19.1628
+2022-11-28 11:25:09,448 Train INFO: mean validate reward: 19.1696
+2022-11-28 11:25:09,947 Train INFO: mean validate reward: 18.8062
+2022-11-28 11:25:10,566 Train INFO: mean validate reward: 20.8749
+2022-11-28 11:25:11,086 Train INFO: mean validate reward: 19.2169
+2022-11-28 11:25:11,601 Train INFO: mean validate reward: 19.4619
+2022-11-28 11:25:12,226 Train INFO: mean validate reward: 21.6439
+2022-11-28 11:25:12,802 Train INFO: mean validate reward: 19.7871
+2022-11-28 11:25:13,365 Train INFO: mean validate reward: 20.1060
+2022-11-28 11:25:13,929 Train INFO: mean validate reward: 20.8846
+2022-11-28 11:25:14,478 Train INFO: mean validate reward: 19.5976
+2022-11-28 11:25:15,018 Train INFO: mean validate reward: 19.8401
+2022-11-28 11:25:15,581 Train INFO: mean validate reward: 20.4519
+2022-11-28 11:25:16,155 Train INFO: mean validate reward: 20.4459
+2022-11-28 11:25:16,671 Train INFO: mean validate reward: 19.7356
+2022-11-28 11:25:17,207 Train INFO: mean validate reward: 19.0929
+2022-11-28 11:25:17,826 Train INFO: mean validate reward: 20.7949
+2022-11-28 11:25:18,369 Train INFO: mean validate reward: 20.4067
+2022-11-28 11:25:19,005 Train INFO: mean validate reward: 22.2910
+2022-11-28 11:25:19,630 Train INFO: mean validate reward: 21.9289
+2022-11-28 11:25:20,195 Train INFO: mean validate reward: 19.2969
+2022-11-28 11:25:20,789 Train INFO: mean validate reward: 20.4660
+2022-11-28 11:25:21,422 Train INFO: mean validate reward: 21.6390
+2022-11-28 11:25:21,425 Train INFO: great!
+2022-11-28 11:25:21,994 Train INFO: mean validate reward: 19.7563
+2022-11-28 11:25:22,504 Train INFO: mean validate reward: 19.3698
+2022-11-28 11:25:23,059 Train INFO: mean validate reward: 20.0948
+2022-11-28 11:25:23,059 Train INFO: start epoch: 5 / 100
+2022-11-28 11:25:23,616 Train INFO: mean validate reward: 20.8721
+2022-11-28 11:25:24,105 Train INFO: mean validate reward: 19.2754
+2022-11-28 11:25:24,623 Train INFO: mean validate reward: 20.2878
+2022-11-28 11:25:25,249 Train INFO: mean validate reward: 21.7165
+2022-11-28 11:25:25,850 Train INFO: mean validate reward: 21.8321
+2022-11-28 11:25:26,444 Train INFO: mean validate reward: 20.0537
+2022-11-28 11:25:27,023 Train INFO: mean validate reward: 19.8068
+2022-11-28 11:25:27,564 Train INFO: mean validate reward: 20.2792
+2022-11-28 11:25:28,127 Train INFO: mean validate reward: 21.7495
+2022-11-28 11:25:28,742 Train INFO: mean validate reward: 23.2591
+2022-11-28 11:25:28,744 Train INFO: great!
+2022-11-28 11:25:29,307 Train INFO: mean validate reward: 23.1299
+2022-11-28 11:25:29,308 Train INFO: great!
+2022-11-28 11:25:29,883 Train INFO: mean validate reward: 21.3023
+2022-11-28 11:25:29,885 Train INFO: great!
+2022-11-28 11:25:30,405 Train INFO: mean validate reward: 21.3843
+2022-11-28 11:25:30,407 Train INFO: great!
+2022-11-28 11:25:30,936 Train INFO: mean validate reward: 21.5686
+2022-11-28 11:25:30,937 Train INFO: great!
+2022-11-28 11:25:31,528 Train INFO: mean validate reward: 23.1482
+2022-11-28 11:25:31,532 Train INFO: great!
+2022-11-28 11:25:32,128 Train INFO: mean validate reward: 22.6711
+2022-11-28 11:25:32,129 Train INFO: great!
+2022-11-28 11:25:32,626 Train INFO: mean validate reward: 20.9374
+2022-11-28 11:25:32,627 Train INFO: great!
+2022-11-28 11:25:33,257 Train INFO: mean validate reward: 25.1404
+2022-11-28 11:25:33,258 Train INFO: great!
+2022-11-28 11:25:33,781 Train INFO: mean validate reward: 22.1170
+2022-11-28 11:25:33,782 Train INFO: great!
+2022-11-28 11:25:34,320 Train INFO: mean validate reward: 20.7379
+2022-11-28 11:25:34,321 Train INFO: great!

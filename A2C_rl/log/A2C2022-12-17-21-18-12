@@ -1,0 +1,13 @@
+2022-12-17 21:18:12,395 Train INFO: Namespace(logger=<Logger Train (INFO)>, name='A2C2022-12-17-21-18-12', gpu='0', device=device(type='cuda', index=0), gamma=1, epoch_num=3000, test_episode=50, val_episode=50, test_size=0.1, val_size=0.5, batch_size=50, train_batch_size=50, num_steps=10, h=1, w=[120, 50], nn_out=40, share_lr=0.01, actor_lr=0.001, critic_lr=0.01, step=50, lr_min=0.0001, e_rate=0.001, a_rate=1, c_rate=1, lr_decay_lambda=0.99, duse_T=True, est_T=False, use_pref=False, same_price=False, use_price=True, only_test=False, change_T=True, num='0', print_grad=False, max_norm=10, seed_range=20, net_seed=0, seed=0, info=True, selling_length=180, cardinality=4, ini_inv=10, num_products=10, number_samples=10000, num_cus_types=4, seg_prob=None, cus_type=None, rank_list=None, detail=True)
+2022-12-17 21:18:12,395 Train INFO: log/A2C2022-12-17-21-18-12
+2022-12-17 21:18:12,397 Train INFO: products price: [2000.         1788.88888889 1577.77777778 1366.66666667 1155.55555556
+  944.44444444  733.33333333  522.22222222  311.11111111  100.        ]
+2022-12-17 21:18:12,397 Train INFO: Load Factor 1.8
+2022-12-17 21:18:19,205 Train INFO: inventory_level of OA_seller: [10.   10.   10.   10.   10.    9.98 10.    9.88  9.88  9.76]
+2022-12-17 21:18:19,205 Train INFO: inventory_level of myopic_seller: [10.   10.   10.   10.   10.   10.   10.    9.54 10.   10.  ]
+2022-12-17 21:18:19,206 Train INFO: inventory_level of E_IB_seller: [10.   10.   10.   10.   10.   10.   10.    9.48 10.   10.  ]
+2022-12-17 21:18:19,206 Train INFO: other agents' reward: [0.07144444] , [0.12011111] , [0.13577778]
+2022-12-17 21:19:54,867 Train INFO: inventory_level of OA_seller: [9.88 9.96 9.92 9.96 9.98 9.98 9.96 9.88 9.86 9.74]
+2022-12-17 21:19:54,868 Train INFO: inventory_level of myopic_seller: [ 9.72  9.92  9.96  9.96 10.   10.   10.    9.54 10.   10.  ]
+2022-12-17 21:19:54,868 Train INFO: inventory_level of E_IB_seller: [ 9.62  9.98  9.96  9.94 10.   10.   10.    9.48 10.   10.  ]
+2022-12-17 21:19:54,868 Train INFO: other agents' reward: [0.348] , [0.53055556] , [0.60622222]

@@ -1,0 +1,16 @@
+2022-12-05 17:18:50,718 Train INFO: Namespace(logger=<Logger Train (INFO)>, name='A2C2022-12-05-17-18-50', gpu='0', device=device(type='cuda', index=0), gamma=1, epoch_num=100, train_episode=2000, test_episode=40, val_episode=40, test_size=0.1, val_size=0.5, batch_size=40, train_batch_size=50, num_steps=10, h=1, w=[120, 50], nn_out=40, share_lr=0.001, actor_lr=0.001, critic_lr=0.01, step=20, lr_min=0.0001, e_rate=0.001, a_rate=1, c_rate=1, lr_decay_lambda=0.999, duse_T=True, est_T=False, use_pref=False, same_price=False, use_price=True, only_test=True, change_T=True, num='0', print_grad=False, max_norm=10, seed_range=20, net_seed=47, info=True, selling_length=200, cardinality=4, ini_inv=2, num_products=57, number_samples=10000, num_cus_types=4, seg_prob=[0.4, 0.3, 0.1, 0.2], num_cus_features=4, p_file='../Gene_databeta/save/expedia_prop_features.npy')
+2022-12-05 17:18:50,718 Train INFO: log/A2C2022-12-05-17-18-50
+2022-12-05 17:18:52,550 Train INFO: products price: [142.19711247 151.98599171 102.64709491 178.20763238 141.29402938
+ 126.70564929 113.29384155 110.89915292 139.93040185 104.78139591
+ 215.35799721  88.30556835 168.52134943 208.55338737 118.30113621
+ 200.79038063  98.29018954 106.42409558 230.43245826 181.61673989
+ 216.62308194 111.69995734 205.43402531  77.75741491  97.80493605
+  74.52117468 204.93956053  75.80048576  92.69885696  69.67685107
+  74.58481392  69.59005217  99.66155186 162.8603774  237.29112377
+ 122.2126781  169.00415941  79.00614196 148.2546165  149.00459998
+  89.00592168  71.00631819  74.0062521  138.67149427  62.00651644
+  59.00658253 117.00530489  43.00693498 109.00548111  73.00627413
+ 164.00426956  59.00658253 139.00482026  79.33946795 112.00541503
+ 159.0043797  109.00548111]
+2022-12-05 17:18:52,550 Train INFO: Load Factor 1.7543859649122806
+2022-12-05 17:18:52,550 Train INFO: test seed: 0************************************
