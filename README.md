@@ -18,7 +18,7 @@ to run with different Load Factors, change ini_inv to 8, 9, 11.
 
 #### rlGT_reuse
 
-different usage time distribution is chosen by line 71-74 and line 153-156 in `env.py` .
+different usage time distributions are chosen by line 71-74 and line 153-156 in `env.py` .
 
 run with :
 
