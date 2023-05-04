@@ -3,10 +3,11 @@ from func import *
 import torch.optim as optim
 torch.set_default_tensor_type(torch.DoubleTensor)
 from env import market_dynamic
-from other_agents import OA_agent,myopic_agent,E_IB_agent
+from other_agents import OA_agent,myopic_agent,E_IB_agent,sub_t_agent
 import torch,math
 from numpy import *
 from uti import compute_returns
+
 def initialize(args,model):
     optimizer = optim.Adam(
         [#{"params": model.inv_encoder.parameters()},
@@ -23,6 +24,8 @@ def initialize(args,model):
     return lr_scheduler,optimizer
 
 def train(args,ResNet,products_price,initial_inventory,train_sequences,logger):
+    torch.manual_seed(args.net_seed)
+    random.seed(args.net_seed)
     input_length = 2*len(initial_inventory)+args.num_cus_types#
     seller = A2C(args, input_length).to(args.device)
     lr_scheduler,optimizer = initialize(args,seller)
@@ -120,22 +123,26 @@ def test(test_sequences,ResNet,MNL_para,initial_inventory,products_price,args,lo
     OA_list_mean=np.zeros(len(test_sequences))
     myopic_list_mean=np.zeros(len(test_sequences))
     E_IB_list_mean=np.zeros(len(test_sequences))
+    sub_t_list_mean=np.zeros(len(test_sequences))
     seller_list_mean=np.zeros(len(test_sequences))
     for seed_ in range(args.seed_range):
         logger.info("test seed: {}************************************".format(seed_))
         #np.random.seed(seed_)
         #random.seed(seed_)
-        env_OA = market_dynamic(args,ResNet,initial_inventory, products_price, 100,True)
-        env_myopic = market_dynamic(args,ResNet,initial_inventory, products_price, 100,True)
-        env_EIB = market_dynamic(args,ResNet,initial_inventory, products_price, 100,True)
-
+        env_OA = market_dynamic(args,ResNet,initial_inventory,products_price,100)
+        env_myopic = market_dynamic(args,ResNet,initial_inventory,products_price,100)
+        env_EIB = market_dynamic(args,ResNet,initial_inventory,products_price,100)
+        env_sub = market_dynamic(args,ResNet,initial_inventory,products_price,100)
+        
         OA_seller = OA_agent(args,env_OA, products_price)
         myopic_seller = myopic_agent(args,env_myopic,MNL_para,products_price)
         E_IB_seller = E_IB_agent(args,env_EIB,MNL_para,products_price)
+        sub_t_seller = sub_t_agent(args,env_sub,MNL_para,products_price)
         
         OA_list = np.zeros((args.batch_size, 1))
         myopic_list = np.zeros((args.batch_size, 1))
         E_IB_list = np.zeros((args.batch_size, 1))
+        sub_t_list = np.zeros((args.batch_size, 1))
 
         env = market_dynamic(args,ResNet,initial_inventory, products_price, 100,True)
         input_length = 2*len(initial_inventory)+args.num_cus_types#
@@ -154,11 +161,13 @@ def test(test_sequences,ResNet,MNL_para,initial_inventory,products_price,args,lo
             input_sequence = np.array([input_sequence])-1
             env.reset(initial_inventory, T)
             if bool(not plot):# 
-                other_agents(OA_seller, myopic_seller, E_IB_seller,
+                other_agents(OA_seller, myopic_seller, E_IB_seller,sub_t_seller,
                          initial_inventory, T, products_price, input_sequence)
             OA_list = np.vstack((OA_list,OA_seller.total_reward))
             myopic_list = np.vstack((myopic_list, myopic_seller.total_reward))
             E_IB_list = np.vstack((E_IB_list, E_IB_seller.total_reward))
+            sub_t_list = np.vstack((sub_t_list, sub_t_seller.total_reward))
+            #print(myopic_seller.total_reward,E_IB_seller.total_reward,sub_t_seller.total_reward)
             if not args.test_benchmark:
                 cost,test_value = seller.test_env(env, input_sequence)
                 seller_list = np.vstack((seller_list, cost))
@@ -167,34 +176,39 @@ def test(test_sequences,ResNet,MNL_para,initial_inventory,products_price,args,lo
         OA_list = list(OA_list.ravel()[args.batch_size:])
         myopic_list = list(myopic_list.ravel()[args.batch_size:])
         E_IB_list = list(E_IB_list.ravel()[args.batch_size:])
+        sub_t_list = list(sub_t_list.ravel()[args.batch_size:])
         seller_list = list(seller_list.ravel()[args.batch_size:])
         logger.info("mean test reward1: {}".format(seller_list))
         logger.info("mean test reward2: {}".format(OA_list))
         logger.info("mean test reward3: {}".format(myopic_list))
         logger.info("mean test reward4: {}".format(E_IB_list))
-        logger.info("mean test reward: {:.4f},{:.4f},{:.4f},{:.4f}".format(mean(seller_list), mean(OA_list),
-              mean(myopic_list), mean(E_IB_list)))
+        logger.info("mean test reward4: {}".format(sub_t_list))
+        logger.info("mean test reward: {:.4f},{:.4f},{:.4f},{:.4f},{:.4f}".format(mean(seller_list), mean(OA_list),
+              mean(myopic_list), mean(E_IB_list), mean(sub_t_list)))
         if not plot:
             print(mean(seller_list)/mean(OA_list),mean(OA_list)/mean(OA_list),
                   mean(myopic_list)/mean(OA_list),mean(E_IB_list)/mean(OA_list))
         OA_list_mean = OA_list_mean+np.array(OA_list)
         myopic_list_mean = myopic_list_mean+np.array(myopic_list)
         E_IB_list_mean = E_IB_list_mean+np.array(E_IB_list)
+        sub_t_list_mean = sub_t_list_mean+np.array(sub_t_list)
         seller_list_mean = seller_list_mean+np.array(seller_list)
     if not args.test_benchmark:    
         plot_box(args, args.name,OA_list_mean/(args.seed_range), myopic_list_mean/(args.seed_range),
                  E_IB_list_mean/(args.seed_range), seller_list_mean/(args.seed_range))
 
-def other_agents(OA_seller,myopic_seller,E_IB_seller,
+def other_agents(OA_seller,myopic_seller,E_IB_seller,sub_t_seller,
                  initial_inventory,T,products_price,input_sequence,check = False):
     OA_seller.reset(initial_inventory, T)
     myopic_seller.reset(initial_inventory, T, products_price)
     E_IB_seller.reset(initial_inventory, T)
+    sub_t_seller.reset(initial_inventory, T, products_price)
     for t in range(T-1):
         arriving_seg = input_sequence[:, t].reshape(-1, 1)
         OA_seller.step(arriving_seg,check)
         myopic_seller.step(arriving_seg,check)
         E_IB_seller.step(arriving_seg,check)
+        sub_t_seller.step(arriving_seg,check)
     #breakpoint()
         
 def plot_box(args,name,OA_list,myopic_list,E_IB_list,seller_list,plot=True):

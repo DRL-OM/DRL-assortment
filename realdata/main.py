@@ -15,6 +15,7 @@ parser = init_parser('Reinforce')
 args = parser.parse_args()
 device = torch.device("cuda:"+args.gpu if torch.cuda.is_available() else "cpu")
 args.device = device
+args.device = torch.device("cpu")
 name = 'A2C' + time.strftime('%Y-%m-%d-%H-%M-%S')
 args.name = name
 stream = os.path.join('log', name)
@@ -28,7 +29,7 @@ prop_features = np.load(args.p_file)
 product_encoder = torch.load(r'resnet/ex_product_encoder.pth')
 cus_encoder = torch.load(r'resnet/ex_cus_encoder.pth')
 Res_Assort_Net_ = torch.load(r'resnet/ex_net.pth')
-ResNet = simulator(product_encoder, cus_encoder, Res_Assort_Net_).to(device)
+ResNet = simulator(product_encoder, cus_encoder, Res_Assort_Net_).to(args.device)
 products_price = prop_features[:-1,5]*72.28+155.8
 logger.info("products price: {}".format(products_price))
 products_price = products_price/np.max(products_price)
@@ -45,6 +46,8 @@ train_sequences = list(args.seqdata.values())[:160]
 test_sequences = list(args.seqdata.values())[160:]
 ############################
 from train import train,test,plot_box
+
+#torch.manual_seed(args.net_seed)
 if args.test:
     #读取MNL参数
     MNL_para1 = io.loadmat('MNL/20round_beta1.mat')
@@ -57,7 +60,7 @@ if args.test:
     MNL_para = np.vstack((  MNL_para3 , MNL_para4['var'].reshape((-1,6)) ))
     
     test(test_sequences,ResNet,MNL_para,
-            initial_inventory,products_price,args,logger,load=True,plot= False)
+            initial_inventory,products_price,args,logger,load=True,plot= True)
 else:
     os.mkdir('MNL/'+name)
     train(args,ResNet,products_price,initial_inventory,train_sequences,logger)
