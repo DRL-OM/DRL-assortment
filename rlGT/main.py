@@ -17,6 +17,7 @@ parser = init_parser('A2C')
 args = parser.parse_args()
 device = torch.device("cuda:"+args.gpu if torch.cuda.is_available() else "cpu")
 args.device = device
+args.device = torch.device("cpu")
 name = 'A2C' + time.strftime('%Y-%m-%d-%H-%M-%S')
 args.name = name
 stream = os.path.join('log', name)
@@ -30,6 +31,7 @@ products_price = [1.838419913,1.992458678,1.874724518,1.515151515,3.28728191,2.6
 args.rank_list = np.load('GT/ranked_lists_use.npy')
 args.cus_type = np.load('GT/cus_types.npy')
 seg_prob = np.load('GT/cusseg_prob.npy')
+args.seg_prob = seg_prob
 with open('GT/seqdata.json', 'r') as f:
     args.seqdata = json.loads(f.read())
 with open('GT/transdata.json', 'r') as f:
@@ -56,7 +58,7 @@ if args.detail:
             initial_inventory,products_price,args,logger,load=True,plot= False)
 elif args.only_test:
     test(test_sequences,MNL_para,
-            initial_inventory,products_price,args,logger,load=True,plot= False)
+            initial_inventory,products_price,args,logger,load=True,plot= True)
     logger.info(name+"completed")
 else:
     train(args,Gated_net,products_price,initial_inventory,train_sequences,logger)

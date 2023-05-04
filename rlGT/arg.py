@@ -20,9 +20,9 @@ def init_parser(alg):
         parser.add_argument('--train_batch_size', default=1, type=int, help='')
         parser.add_argument('--num_steps', default=10, type=int, help='')
         parser.add_argument('--h', default=1, type=int, help='hidden layer')
-        parser.add_argument('--w', nargs='+', default=[120, 50], type=int)
-        parser.add_argument('--nn_out', default=40, type=int)
-        parser.add_argument('--share_lr', type=float, default=0.001, help='learning rate.')
+        parser.add_argument('--w', nargs='+', default=[128, 128], type=int)#[120, 50]
+        parser.add_argument('--nn_out', default=64, type=int)
+        parser.add_argument('--share_lr', type=float, default=0.0005, help='learning rate.')
         parser.add_argument('--actor_lr', type=float, default=0.0001, help='learning rate.')
         parser.add_argument('--critic_lr', type=float, default=0.0001, help='learning rate.')
         parser.add_argument('--step', type=float, default=100, help='learning rate decay step.')

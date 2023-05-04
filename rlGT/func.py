@@ -30,6 +30,12 @@ def prob_of_products(ass,V):
     prob = V/np.sum(V)
     return prob#不在assortment里的商品概率是0
 
+def exp_rev(ass,V,r):
+    V = ass * V
+    prob = V/np.sum(V)
+    rev = prob@r
+    return rev
+
 def get_myopic_ass(prices,V,inventory_level):
     N = len(inventory_level)
     large_to_small = np.argsort(-prices)  # revenue-ordered结论
