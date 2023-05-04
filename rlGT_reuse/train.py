@@ -10,6 +10,8 @@ from uti import compute_returns
 
 
 def train(args,Gated_net,products_price,initial_inventory,train_sequences,logger):
+    torch.manual_seed(args.net_seed)
+    random.seed(args.net_seed)
     input_length = 2*len(initial_inventory)+args.num_cus_types#
     seller = A2C(args, input_length).to(args.device)
     lr_scheduler,optimizer = initialize(args,seller)

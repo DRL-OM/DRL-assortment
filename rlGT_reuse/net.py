@@ -65,9 +65,7 @@ class A2C(nn.Module):
         global init_c
         init_c = 100/args.nn_out
         self.critic.apply(init_weights_c)
-        self.actor = nn.Sequential(
-            nn.Linear(args.nn_out, args.num_products)
-        )
+        self.actor = nn.RNN(args.nn_out, args.num_products+1, 1)
         self.actor.apply(init_weights)
         self.decode_type = None
         self.num_products = args.num_products
@@ -80,7 +78,7 @@ class A2C(nn.Module):
         X, Z, _,concat_feature0 = create_data()
         self.cus_fea = Z
     def forward(self, history, x):
-        time_filter = nn.functional.leaky_relu( torch.sum( history.T[:10]*self.time_filter,dim=1), negative_slope=0.2)
+        time_filter = nn.functional.leaky_relu( torch.sum( history.T[:10].to(self.device)*self.time_filter,dim=1), negative_slope=0.2)
         
         p_e = self.product_encoder(torch.cat((x[:,:2*self.num_products],time_filter.reshape((1,10))), dim=1))#
         #c_e = self.cus_encoder(x[:,self.num_products:self.num_products+self.args.num_cus_types])#
@@ -89,8 +87,8 @@ class A2C(nn.Module):
         x = self.share(p_c_number)
         #x = self.share(x)
         value = self.critic(x)
-        score = self.actor(x)
-        return score, value
+        #score = self.actor(x)
+        return x, value
     def roll_out(self, env, input_sequence, i):
         ass_log_softmax_list_ = []
         values = []
@@ -108,17 +106,15 @@ class A2C(nn.Module):
             s = np.hstack((s,[[env.arrivals/env.total_inv]]))
             # 关键语句
             pre = time.time()
-            score, value = self.forward(env.purchase_history,torch.from_numpy(s).double().to(self.device))
+            x, value = self.forward(env.purchase_history,torch.from_numpy(s).double().to(self.device))
             now = time.time()
-            score = score.cpu()
-            value = value.cpu()
             #print('time:', now-pre)
             #breakpoint()
             #########
             mask = torch.from_numpy(env.get_mask())
             # Select the indices of the next nodes in the sequences
             assortment, entropy, ass_log_softmax = self._select_node(env,
-                score, mask.bool())  # Squeeze out steps dimension
+                x, mask.bool())  # Squeeze out steps dimension
             mean_entropy += entropy
             _, reward = env.step(arriving_seg,assortment.numpy())
             #要输出的东西
@@ -136,15 +132,14 @@ class A2C(nn.Module):
                     next_state = np.hstack((next_state,self.cus_type[input_sequence[:,i+1]]))
                     next_state = np.hstack((next_state,[[env.arrivals/env.total_inv]]))
                     _, next_value = self.forward(env.purchase_history,torch.DoubleTensor(next_state).to(self.device))
-                    next_value = value.cpu()
                 break
         # Collected lists, return Tensor
         return (
             torch.stack(ass_log_softmax_list_, 1),#shape(batch_size,T)
             torch.cat(values,1),
-            torch.cat(R,1),###
-            torch.DoubleTensor(mean_entropy),
-            m_dones,
+            torch.cat(R,1).to(self.device),###
+            mean_entropy.double(),
+            torch.tensor(m_dones).to(self.device),
             i,
             next_value
         )
@@ -153,26 +148,50 @@ class A2C(nn.Module):
         entropy = -(_log_p * _log_p.exp()).sum(2).sum(1).mean()
         return entropy
 
-    def _select_node(self, env, score, mask):
-        score[mask] = -1e20
-        p = torch.log_softmax(score, dim=1)
-        dist = Categorical(p)
-        entropy = dist.entropy().mean()#想让 entropy 变大，更加随机
-        ass = torch.zeros([env.batch_size, self.num_products],dtype=torch.int)
+    def _select_node(self, env, x, mask):
+        assortment = torch.zeros([env.batch_size, self.num_products+1],dtype=torch.int).to(self.device)
+        entropy = 0
+        ass_log_softmax = 0
+        mask = torch.cat((mask, torch.tensor([[1]])), -1).to(self.device)
         if self.decode_type == "greedy":
-            _, idx1 = torch.sort(p, descending=True)  # descending为False，升序，为True，降序
-            selected = idx1[:,:self.cardinality]
-            ass.scatter_(1,selected,1)
-            ass = ass*torch.logical_not(mask)#注意：不是mask着的东西才能摆
-            ass_log_softmax = (ass*p).sum(axis=1)#是一个长度为batch_size的张量
+            scores,hidden_layer = self.actor(x.repeat(self.args.cardinality,1).reshape(self.args.cardinality,1,-1))
+            for node_num in range(self.args.cardinality):
+                score = scores[node_num]
+                score = score.masked_fill(mask.bool(), value=torch.tensor(-1e20))
+                p = torch.log_softmax(score, dim=1)
+                dist = Categorical(p)
+                entropy += dist.entropy().mean()#想让 entropy 变大，更加随机
+                _, idx1 = torch.sort(p, descending=True)  # descending为False，升序，为True，降序
+                selected = idx1[:,:1]
+                ass = torch.zeros([env.batch_size, self.num_products+1],dtype=torch.int).to(self.device).scatter(1,selected,1)
+                ass_log_softmax += (ass*p).sum(axis=1)#是一个长度为batch_size的张量
+                if selected == self.num_products:
+                    break
+                assortment += ass
+                mask[:,selected[0][0]] = 1
+                mask[:,-1] = 0
+            #ass = ass*torch.logical_not(mask)#注意：不是mask着的东西才能摆
+                
         elif self.decode_type == "sampling":
-            selected = p.exp().multinomial(self.cardinality,replacement=True)#放回的抽样
-            ass.scatter_(1,selected,1)
-            ass = ass*torch.logical_not(mask)#注意：不是mask着的东西才能摆
-            ass_log_softmax = (ass*p).sum(axis=1)
+            scores,hidden_layer = self.actor(x.repeat(self.args.cardinality,1).reshape(self.args.cardinality,1,-1))
+            for node_num in range(self.args.cardinality):
+                score = scores[node_num]
+                score = score.masked_fill(mask.bool(), value=torch.tensor(-1e20))
+                p = torch.log_softmax(score, dim=1)
+                dist = Categorical(p)
+                entropy += dist.entropy().mean()#想让 entropy 变大，更加随机
+                selected = p.exp().multinomial(1)
+                ass = torch.zeros([env.batch_size, self.num_products+1],dtype=torch.int).to(self.device).scatter(1,selected,1)
+                ass_log_softmax += (ass*p).sum(axis=1)#是一个长度为batch_size的张量
+                if selected == self.num_products:
+                    break
+                assortment += ass
+                mask[:,selected[0][0]] = 1
+                mask[:,-1] = 0
         else:
             assert False, "Unknown decode type"
-        return ass, entropy ,ass_log_softmax
+        assert (env.initial_inventory>=0).all(),'can\'t show products with no remaining inventory'
+        return assortment[:,:-1].cpu(), entropy ,ass_log_softmax
 
     def set_decode_type(self, decode_type):
         self.decode_type = decode_type
@@ -206,9 +225,8 @@ class A2C(nn.Module):
             s = np.hstack((s,[[env.arrivals/env.total_inv]]))
             # 关键语句
             pre = time.time()
-            score, value = self.forward(env.purchase_history,torch.from_numpy(s).double().to(self.device))
+            x, value = self.forward(env.purchase_history,torch.from_numpy(s).double().to(self.device))
             now = time.time()
-            score = score.cpu()
             value = value.cpu()
             test_value.append(np.mean(value.detach().numpy()))
             #print('time:', now-pre)
@@ -216,7 +234,7 @@ class A2C(nn.Module):
             mask = torch.from_numpy(env.get_mask())
             # Select the indices of the next nodes in the sequences
             assortment, p, ass_log_softmax = self._select_node(env,
-                            score, mask.bool())  # Squeeze out steps dimension
+                            x, mask.bool())  # Squeeze out steps dimension
             _, reward = env.step(arriving_seg, assortment.numpy())
             R += reward
             if self.args.detail:

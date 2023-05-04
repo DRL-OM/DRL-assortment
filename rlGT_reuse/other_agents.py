@@ -37,7 +37,7 @@ class myopic_agent:
     def __init__(self,args, env_, MNL_para, products_price):
         self.market = env_
         self.batch_size = args.batch_size
-        self.MNL_para = MNL_para
+        self.MNL_para = np.exp(MNL_para)
         self.p = products_price
         self.products_price = np.tile(products_price,(self.batch_size,1))
         self.cardinality=args.cardinality
@@ -83,7 +83,7 @@ class E_IB_agent:
         self.market = env_
         self.batch_size = args.batch_size
         self.initial_inventory = env_.initial_inventory
-        self.MNL_para = MNL_para
+        self.MNL_para = np.exp(MNL_para)
         self.products_price = np.tile(products_price,(self.batch_size,1))
         self.cardinality = args.cardinality
         self.total_reward = np.zeros((self.batch_size,1))
